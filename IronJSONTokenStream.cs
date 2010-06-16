@@ -31,6 +31,14 @@ namespace IronJSON
 		}
 		
 		/// <summary>
+		/// Resets the position to point back at the beginning.
+		/// </summary>
+		public void Reset()
+		{
+			m_index = 0;
+		}
+		
+		/// <summary>
 		/// Adds a token to the stream.
 		/// </summary>
 		/// <param name="token">
@@ -52,12 +60,19 @@ namespace IronJSON
 			}
 		}
 		
+		
 		/// <summary>
-		/// Increments the stream position.
+		/// Increments the stream position. Returns false when at 
+		/// the end of the stream.
 		/// </summary>
-		public void ToNextToken()
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool ToNextToken()
 		{
 			m_index++;
+			
+			return !AtEnd();
 		}
 		
 		/// <summary>

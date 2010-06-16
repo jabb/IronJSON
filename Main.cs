@@ -7,13 +7,16 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
-			Test2();
+			Test1();
 		}
 		
 		public static void Test1()
 		{
-			StreamReader reader = new StreamReader("sample.json");
+			StreamReader reader = new StreamReader("parse.json");
 			IronJSONLexer lexer;
+			IronJSONTokenStream stream;
+			IronJSONParser parser;
+			
 			try
 			{
 				lexer = new IronJSONLexer(reader.ReadToEnd());
@@ -22,22 +25,18 @@ namespace IronJSON
 			{
 				reader.Close();
 			}
-			IronJSONTokenStream stream = lexer.GenerateTokenStream();
+			stream = lexer.GenerateTokenStream();
 			
-			do 
-			{
-				if (stream.CurrentToken.Type == TokenType.String)
-					Console.WriteLine("{0}: \"{1}\"", stream.CurrentToken.Type, stream.CurrentToken.String);
-				else if (stream.CurrentToken.Type == TokenType.Float)
-					Console.WriteLine("{0}: {1}", stream.CurrentToken.Type, stream.CurrentToken.Float);
-				else if (stream.CurrentToken.Type == TokenType.Integer)
-					Console.WriteLine("{0}: {1}", stream.CurrentToken.Type, stream.CurrentToken.Integer);
-				else
-					Console.WriteLine("{0}", stream.CurrentToken.Type);
-				stream.ToNextToken();
-			} while (!stream.AtEnd());
+			parser = new IronJSONParser(stream);
+			
+			parser.Parse();
+			
+			Console.WriteLine(parser.Obj.ToString());
 		}
 		
+		/// <summary>
+		/// Test for outputing IronJSONObjects
+		/// </summary>
 		public static void Test2()
 		{
 			IronJSONObject obj = new IronJSONObject();
@@ -48,12 +47,6 @@ namespace IronJSON
 			
 			obj["this"] = new IronJSONValue(5);
 			obj["ha"] = new IronJSONValue(nobj);
-			IronJSONValue arr = new IronJSONValue(ValueType.Array);
-			arr.Array.Add(new IronJSONValue(5));
-			arr.Array.Add(new IronJSONValue(10));
-			arr.Array.Add(new IronJSONValue(4.3E-10));
-			arr.Array.Add(new IronJSONValue(15));
-			obj["arr"] = arr;
 			
 			Console.WriteLine(obj.ToString());
 		}
