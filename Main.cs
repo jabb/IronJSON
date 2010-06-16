@@ -7,6 +7,11 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
+			Test2();
+		}
+		
+		public static void Test1()
+		{
 			StreamReader reader = new StreamReader("sample.json");
 			IronJSONLexer lexer;
 			try
@@ -31,6 +36,20 @@ namespace IronJSON
 					Console.WriteLine("{0}", stream.CurrentToken.Type);
 				stream.ToNextToken();
 			} while (!stream.AtEnd());
+		}
+		
+		public static void Test2()
+		{
+			IronJSONObject obj = new IronJSONObject();
+			IronJSONObject nobj = new IronJSONObject();
+			
+			nobj["is"] = new IronJSONValue("json");
+			nobj["!"] = new IronJSONValue(ValueType.Null);
+			
+			obj["this"] = new IronJSONValue(5);
+			obj["ha"] = new IronJSONValue(nobj);
+			
+			Console.WriteLine(obj.ToString());
 		}
 	}
 }
