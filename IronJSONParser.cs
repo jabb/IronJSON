@@ -126,7 +126,30 @@ namespace IronJSON
 		/// </returns>
 		private IronJSONValue ParseList()
 		{
-			return null;
+			IronJSONValue val = new IronJSONValue(ValueType.Array);
+			
+			if (m_tokenStream.CurrentToken.Type != TokenType.LeftSquareBracket)
+				throw ParseError("expected '['");
+			
+			// Skip the '['
+			if (!m_tokenStream.ToNextToken())
+				throw ParseError("expected ']'");
+			
+			while (!m_tokenStream.AtEnd())
+			{
+				// Parse the value.
+				val.Array.Add(ParseValue());
+				
+				// Skip the ',' or ']'
+				if (!m_tokenStream.ToNextToken())
+					break;
+				
+				// If what we skipped what a ']', break.
+				if (m_tokenStream.PreviousToken.Type == TokenType.RightSquareBracket)
+					break;
+			}
+			
+			return val;
 		}
 		
 		/// <summary>

@@ -12,7 +12,7 @@ namespace IronJSON
 		
 		public static void Test1()
 		{
-			StreamReader reader = new StreamReader("parse.json");
+			StreamReader reader = new StreamReader("sample.json");
 			IronJSONLexer lexer;
 			IronJSONTokenStream stream;
 			IronJSONParser parser;
