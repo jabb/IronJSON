@@ -179,6 +179,22 @@ namespace IronJSON
 		/// </returns>
 		override public string ToString()
 		{
+			return ToString(0);
+		}
+		
+		/// <summary>
+		/// Converts this value to a string to be written out to a
+		/// JSON file.
+		/// </summary>
+		/// <param name="indentLevel">
+		/// A <see cref="System.Int32"/> which indicates the indentation
+		/// level to use.
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.String"/>
+		/// </returns>
+		public string ToString(int indentLevel)
+		{
 			StringBuilder builder = new StringBuilder();
 			
 			if (m_type == ValueType.String)
@@ -197,7 +213,7 @@ namespace IronJSON
 			}
 			else if (m_type == ValueType.Object)
 			{
-				builder.Append(m_data.objct.ToString());
+				builder.Append(m_data.objct.ToString(indentLevel));
 			}
 			else if (m_type == ValueType.Array)
 			{
