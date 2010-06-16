@@ -5,7 +5,7 @@ namespace IronJSON
 {
 	class MainClass
 	{
-		public static void Main (string[] args)
+		public static void Main(string[] args)
 		{
 			StreamReader reader = new StreamReader("sample.json");
 			IronJSONLexer lexer;
@@ -21,11 +21,11 @@ namespace IronJSON
 			
 			do 
 			{
-				if (stream.CurrentToken.Type == Token.String)
+				if (stream.CurrentToken.Type == TokenType.String)
 					Console.WriteLine("{0}: \"{1}\"", stream.CurrentToken.Type, stream.CurrentToken.String);
-				else if (stream.CurrentToken.Type == Token.Float)
+				else if (stream.CurrentToken.Type == TokenType.Float)
 					Console.WriteLine("{0}: {1}", stream.CurrentToken.Type, stream.CurrentToken.Float);
-				else if (stream.CurrentToken.Type == Token.Integer)
+				else if (stream.CurrentToken.Type == TokenType.Integer)
 					Console.WriteLine("{0}: {1}", stream.CurrentToken.Type, stream.CurrentToken.Integer);
 				else
 					Console.WriteLine("{0}", stream.CurrentToken.Type);

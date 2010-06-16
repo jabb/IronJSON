@@ -1,11 +1,12 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace IronJSON
 {
 	/// <summary>
 	/// Different IronJSONToken types.
 	/// </summary>
-	public enum Token
+	public enum TokenType
 	{
 		// Character tokens.
 		LeftCurlyBracket,
@@ -24,12 +25,24 @@ namespace IronJSON
 		Null
 	}
 	
+	/// <summary>
+	/// Union of possible token values.
+	/// </summary>
+	[System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+	public struct TokenData
+	{
+		[System.Runtime.InteropServices.FieldOffset(0)]
+		public string strng;
+		[System.Runtime.InteropServices.FieldOffset(0)]
+		public long intgr;
+		[System.Runtime.InteropServices.FieldOffset(0)]
+		public double flt;
+	}
+	
 	public class IronJSONToken
 	{
-		private Token 	m_type;
-		private string 	m_string;
-		private double 	m_float;
-		private long 	m_integer;
+		private TokenType 	m_type;
+		private TokenData	m_data;
 		
 		/// <summary>
 		/// Constructor.
@@ -37,7 +50,7 @@ namespace IronJSON
 		/// <param name="type">
 		/// A <see cref="Type"/>
 		/// </param>
-		public IronJSONToken(Token type)
+		public IronJSONToken(TokenType type)
 		{
 			m_type = type;
 		}
@@ -48,9 +61,9 @@ namespace IronJSON
 		/// <param name="str">
 		/// A <see cref="String"/>
 		/// </param>
-		public IronJSONToken(String str) : this(Token.String)
+		public IronJSONToken(String str) : this(TokenType.String)
 		{
-			m_string = str;
+			m_data.strng = str;
 		}
 		
 		/// <summary>
@@ -59,9 +72,9 @@ namespace IronJSON
 		/// <param name="d">
 		/// A <see cref="System.Double"/>
 		/// </param>
-		public IronJSONToken(double f) : this(Token.Float)
+		public IronJSONToken(double f) : this(TokenType.Float)
 		{
-			m_float = f;
+			m_data.flt = f;
 		}
 		
 		/// <summary>
@@ -70,15 +83,15 @@ namespace IronJSON
 		/// <param name="l">
 		/// A <see cref="System.Int64"/>
 		/// </param>
-		public IronJSONToken(long i) : this(Token.Integer)
+		public IronJSONToken(long i) : this(TokenType.Integer)
 		{
-			m_integer = i;
+			m_data.intgr = i;
 		}
 		
 		/// <summary>
 		/// Returns the type of token.
 		/// </summary>
-		public Token Type
+		public TokenType Type
 		{
 			get
 			{
@@ -95,9 +108,9 @@ namespace IronJSON
 		{
 			get
 			{
-				if (m_type != Token.String)
+				if (m_type != TokenType.String)
 					throw new IronJSONException("invalid string token retrieval");
-				return m_string;
+				return m_data.strng;
 			}
 		}
 		
@@ -110,9 +123,9 @@ namespace IronJSON
 		{
 			get
 			{
-				if (m_type != Token.Float)
+				if (m_type != TokenType.Float)
 					throw new IronJSONException("invalid float token retrieval");
-				return m_float;
+				return m_data.flt;
 			}
 		}
 		
@@ -125,9 +138,9 @@ namespace IronJSON
 		{
 			get
 			{
-				if (m_type != Token.Integer)
+				if (m_type != TokenType.Integer)
 					throw new IronJSONException("invalid integer token retrieval");
-				return m_integer;
+				return m_data.intgr;
 			}
 		}
 	}

@@ -31,27 +31,27 @@ namespace IronJSON
 			{
 				if (m_string[i] == '{')
 				{
-					tokenStream.Add(new IronJSONToken(Token.LeftCurlyBracket));
+					tokenStream.Add(new IronJSONToken(TokenType.LeftCurlyBracket));
 				}
 				else if (m_string[i] == '}')
 				{
-					tokenStream.Add(new IronJSONToken(Token.RightCurlyBracket));
+					tokenStream.Add(new IronJSONToken(TokenType.RightCurlyBracket));
 				}
 				else if (m_string[i] == '[')
 				{
-					tokenStream.Add(new IronJSONToken(Token.LeftSquareBracket));
+					tokenStream.Add(new IronJSONToken(TokenType.LeftSquareBracket));
 				}
 				else if (m_string[i] == ']')
 				{
-					tokenStream.Add(new IronJSONToken(Token.RightSquareBracket));
+					tokenStream.Add(new IronJSONToken(TokenType.RightSquareBracket));
 				}
 				else if (m_string[i] == ',')
 				{
-					tokenStream.Add(new IronJSONToken(Token.Comma));
+					tokenStream.Add(new IronJSONToken(TokenType.Comma));
 				}
 				else if (m_string[i] == ':')
 				{
-					tokenStream.Add(new IronJSONToken(Token.Colon));
+					tokenStream.Add(new IronJSONToken(TokenType.Colon));
 				}
 				// Numbers.
 				else if (Char.IsDigit(m_string[i]) || m_string[i] == '-')
@@ -187,17 +187,17 @@ namespace IronJSON
 					
 					if (tmpString.IndexOf("true") == 0)
 					{
-						tokenStream.Add(new IronJSONToken(Token.True));
+						tokenStream.Add(new IronJSONToken(TokenType.True));
 						i += 3; // Length of "true" minus one. 1 will be added later.
 					}
 					else if (tmpString.IndexOf("false") == 0)
 					{
-						tokenStream.Add(new IronJSONToken(Token.False));
+						tokenStream.Add(new IronJSONToken(TokenType.False));
 						i += 4; // Length of "false" minus one. 1 will be added later.
 					}
 					else if (tmpString.IndexOf("null") == 0)
 					{
-						tokenStream.Add(new IronJSONToken(Token.Null));
+						tokenStream.Add(new IronJSONToken(TokenType.Null));
 						i += 3; // Length of "null" minus one. 1 will be added later.
 					}
 					else
