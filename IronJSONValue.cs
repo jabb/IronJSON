@@ -122,6 +122,8 @@ namespace IronJSON
 		{
 			get
 			{
+				if (m_type != ValueType.String)
+					throw new IronJSONException("invalid string value retrieval");
 				return m_data.strng;
 			}
 		}
@@ -133,6 +135,8 @@ namespace IronJSON
 		{
 			get
 			{
+				if (m_type != ValueType.Integer)
+					throw new IronJSONException("invalid integer value retrieval");
 				return m_data.intgr;
 			}
 		}
@@ -144,6 +148,8 @@ namespace IronJSON
 		{
 			get
 			{
+				if (m_type != ValueType.Float)
+					throw new IronJSONException("invalid float value retrieval");
 				return m_data.flt;
 			}
 		}
@@ -155,6 +161,8 @@ namespace IronJSON
 		{
 			get
 			{
+				if (m_type != ValueType.Object)
+					throw new IronJSONException("invalid object value retrieval");
 				return m_data.objct;
 			}
 		}
@@ -166,6 +174,8 @@ namespace IronJSON
 		{
 			get
 			{
+				if (m_type != ValueType.Array)
+					throw new IronJSONException("invalid array value retrieval");
 				return m_data.arry;
 			}
 		}
@@ -220,12 +230,20 @@ namespace IronJSON
 				builder.Append("[\n");
 				foreach (IronJSONValue val in m_data.arry)
 				{
+					for (int i = 0; i < indentLevel + 1; i++ )
+					{
+						builder.Append("\t");	
+					}	
 					builder.Append(val.ToString());
-					builder.Append(",\n");
 				}
 				if (m_data.arry.Count > 0)
 					builder.Remove(builder.Length - 2, 2); // Eat the trailing comma.
-				builder.Append("\n]");
+				builder.Append("\n");
+				for (int i = 0; i < indentLevel; i++ )
+				{
+					builder.Append("\t");
+				}	
+				builder.Append("]");
 			}
 			else if (m_type == ValueType.True)
 			{

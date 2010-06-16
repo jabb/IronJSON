@@ -48,6 +48,12 @@ namespace IronJSON
 			
 			obj["this"] = new IronJSONValue(5);
 			obj["ha"] = new IronJSONValue(nobj);
+			IronJSONValue arr = new IronJSONValue(ValueType.Array);
+			arr.Array.Add(new IronJSONValue(5));
+			arr.Array.Add(new IronJSONValue(10));
+			arr.Array.Add(new IronJSONValue(4.3E-10));
+			arr.Array.Add(new IronJSONValue(15));
+			obj["arr"] = arr;
 			
 			Console.WriteLine(obj.ToString());
 		}
