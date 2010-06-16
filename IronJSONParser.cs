@@ -143,28 +143,4 @@ namespace IronJSON
 			return new IronJSONException(message);
 		}
 	}
-	
-	internal interface IAbstractSyntaxTree
-	{
-		void AcceptVisitor(IASTVisitor visitor);
-	}
-	
-	internal interface IASTVisitor
-	{
-		// List of all the AST classes the visitor can visit.
-		void Visit(ASTObject ast);
-	}
-	
-	internal class ASTObject : IAbstractSyntaxTree
-	{
-		public ASTObject()
-		{
-			
-		}
-		
-		public void AcceptVisitor(IASTVisitor visitor)
-		{
-			visitor.Visit(this);
-		}
-	}
 }
