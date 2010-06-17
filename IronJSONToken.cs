@@ -6,7 +6,7 @@ namespace IronJSON
 	/// <summary>
 	/// Different IronJSONToken types.
 	/// </summary>
-	public enum TokenType
+	internal enum TokenType
 	{
 		// Character tokens.
 		LeftCurlyBracket,
@@ -29,7 +29,7 @@ namespace IronJSON
 	/// Union of possible token values.
 	/// </summary>
 	[System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
-	public struct TokenData
+	internal struct TokenData
 	{
 		[System.Runtime.InteropServices.FieldOffset(0)]
 		public string strng;
@@ -39,7 +39,7 @@ namespace IronJSON
 		public double flt;
 	}
 	
-	public class IronJSONToken
+	internal class IronJSONToken
 	{
 		private TokenType 	m_type;
 		private TokenData	m_data;

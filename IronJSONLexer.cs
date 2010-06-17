@@ -4,7 +4,7 @@ using System;
 namespace IronJSON
 {
 
-	public class IronJSONLexer
+	internal class IronJSONLexer
 	{
 		private string m_string;
 		

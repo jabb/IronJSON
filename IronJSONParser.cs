@@ -3,7 +3,7 @@ using System;
 
 namespace IronJSON
 {
-	public class IronJSONParser
+	internal class IronJSONParser
 	{
 		private IronJSONTokenStream m_tokenStream;
 		private IronJSONObject m_obj; // The final product after parsing.

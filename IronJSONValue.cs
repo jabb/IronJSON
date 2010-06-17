@@ -9,7 +9,7 @@ namespace IronJSON
 	/// <summary>
 	/// Different value types.
 	/// </summary>
-	public enum ValueType
+	internal enum ValueType
 	{
 		String,
 		Integer,
@@ -25,7 +25,7 @@ namespace IronJSON
 	/// Union of value data.
 	/// </summary>
 	[System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
-	public struct ValueData
+	internal struct ValueData
 	{
 		[System.Runtime.InteropServices.FieldOffset(0)]
 		public string strng;
@@ -39,7 +39,7 @@ namespace IronJSON
 		public ArrayList arry;
 	}
 	
-	public class IronJSONValue
+	internal class IronJSONValue
 	{
 		private ValueType m_type;
 		private ValueData m_data;

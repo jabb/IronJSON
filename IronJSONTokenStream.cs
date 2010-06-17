@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IronJSON
 {
-	public class IronJSONTokenStream
+	internal class IronJSONTokenStream
 	{
 		private List<IronJSONToken> m_tokens;
 		private int m_index;

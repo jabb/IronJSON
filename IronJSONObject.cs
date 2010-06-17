@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IronJSON
 {
-	public class IronJSONObject
+	internal class IronJSONObject
 	{
 		Hashtable m_table;
 		

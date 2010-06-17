@@ -7,7 +7,9 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
-			Test1();
+			IronJSON json = new IronJSON();
+			
+			json.Save("empty.json");
 		}
 		
 		public static void Test1()
