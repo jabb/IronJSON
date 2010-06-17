@@ -238,22 +238,15 @@ namespace IronJSON
 			}
 			else if (m_type == ValueType.Array)
 			{
-				builder.Append("[\n");
+				
+				builder.Append("[");
 				foreach (IronJSONValue val in m_data.arry)
 				{
-					for (int i = 0; i < indentLevel + 1; i++ )
-					{
-						builder.Append("\t");	
-					}	
-					builder.Append(val.ToString());
+					builder.Append(val.ToString(-1));
 				}
+				
 				if (m_data.arry.Count > 0)
-					builder.Remove(builder.Length - 2, 2); // Eat the trailing comma.
-				builder.Append("\n");
-				for (int i = 0; i < indentLevel; i++ )
-				{
-					builder.Append("\t");
-				}	
+					builder.Remove(builder.Length - 1, 1); // Eat the trailing comma.
 				builder.Append("]");
 			}
 			else if (m_type == ValueType.True)
@@ -269,7 +262,9 @@ namespace IronJSON
 				builder.Append("null");
 			}
 			
-			builder.Append(",\n");
+			//builder.Append(",\n");
+			builder.Append(",");
+			if ( indentLevel > -1 ) builder.Append("\n");
 			
 			return builder.ToString();
 		}

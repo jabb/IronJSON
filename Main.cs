@@ -10,6 +10,8 @@ namespace IronJSON
 			IronJSON json = new IronJSON();
 			
 			json.Save("empty.json");
+			
+			Test1();
 		}
 		
 		public static void Test1()
