@@ -238,15 +238,34 @@ namespace IronJSON
 			}
 			else if (m_type == ValueType.Array)
 			{
-				
+				bool containsArray = false;
 				builder.Append("[");
 				foreach (IronJSONValue val in m_data.arry)
 				{
+					// Formatting arrays nicely:
+					if (val.Type == ValueType.Array)
+					{
+						containsArray = true;
+						builder.Append("\n");
+						for (int i = 0; i < indentLevel + 1; i++ )
+						{
+							builder.Append("\t");
+						}	
+					}
 					builder.Append(val.ToString(-1));
 				}
 				
 				if (m_data.arry.Count > 0)
 					builder.Remove(builder.Length - 1, 1); // Eat the trailing comma.
+				
+				if (containsArray)
+				{
+					builder.Append("\n");
+					for (int i = 0; i < indentLevel; i++ )
+					{
+						builder.Append("\t");
+					}
+				}
 				builder.Append("]");
 			}
 			else if (m_type == ValueType.True)
