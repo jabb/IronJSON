@@ -107,46 +107,9 @@ namespace IronJSON
 							{
 								throw new IronJSONException("unterminated string on line " + line.ToString());
 							}
-							else if (m_string[i] == '"')
-							{
-								s += '"';
-							}
-							else if (m_string[i] == '\\')
-							{
-								s += '\\';
-							}
-							else if (m_string[i] == '/')
-							{
-								s += '/';
-							}
-							else if (m_string[i] == 'b')
-							{
-								s += '\b';
-							}
-							else if (m_string[i] == 'f')
-							{
-								s += '\f';
-							}
-							else if (m_string[i] == 'n')
-							{
-								s += '\n';
-							}
-							else if (m_string[i] == 'r')
-							{
-								s += '\r';
-							}
-							else if (m_string[i] == 't')
-							{
-								s += '\t';
-							}
-							else if (m_string[i] == 'u')
-							{
-								// TODO: Convert unicode.
-							}
-							else
-							{
-								throw new IronJSONException("bad escape sequence on line " + line.ToString());
-							}
+							
+							s += "\\" + m_string[i];
+							// TODO: Convert unicode.
 						}
 						else if (m_string[i] == '"')
 						{
@@ -158,7 +121,18 @@ namespace IronJSON
 						}
 					}
 					
-					tokenStream.Add(new IronJSONToken(s));
+					// Unescape characters.
+					string temp = String.Copy(s);
+					temp = temp.Replace("\\\"", "\"");
+					temp = temp.Replace("\\\\", "\\");
+					temp = temp.Replace("\\/", "/");
+					temp = temp.Replace("\\b", "\b");
+					temp = temp.Replace("\\f", "\f");
+					temp = temp.Replace("\\n", "\n");
+					temp = temp.Replace("\\r", "\r");
+					temp = temp.Replace("\\t", "\t");
+					
+					tokenStream.Add(new IronJSONToken(temp));
 				}
 				// Whitespace, mostly.
 				else if (m_string[i] == '\n')

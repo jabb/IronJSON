@@ -75,7 +75,18 @@ namespace IronJSON
 					builder.Append("\t");	
 				}				
 				builder.Append("\"");
-				builder.Append(de.Key);
+				// Escape certain characters.
+				string temp = String.Copy((string)de.Key);
+				temp = temp.Replace("\"", "\\\"");
+				temp = temp.Replace("\\", "\\\\");
+				temp = temp.Replace("/", "\\/");
+				temp = temp.Replace("\b", "\\b");
+				temp = temp.Replace("\f", "\\f");
+				temp = temp.Replace("\n", "\\n");
+				temp = temp.Replace("\r", "\\r");
+				temp = temp.Replace("\t", "\\t");
+				builder.Append(temp);
+				
 				builder.Append("\"");
 				builder.Append(": ");			
 				currentValue = de.Value as IronJSONValue;
