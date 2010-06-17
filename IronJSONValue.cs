@@ -239,20 +239,33 @@ namespace IronJSON
 			else if (m_type == ValueType.Array)
 			{
 				bool containsArray = false;
+				
+				// Look to see if there is an array in this array, if
+				// there is we can indent properly.
+				foreach (IronJSONValue val in m_data.arry)
+					if (val.Type == ValueType.Array)
+						containsArray = true;
+				
+				
 				builder.Append("[");
 				foreach (IronJSONValue val in m_data.arry)
 				{
 					// Formatting arrays nicely:
-					if (val.Type == ValueType.Array)
+					if (val.Type == ValueType.Array || containsArray)
 					{
-						containsArray = true;
 						builder.Append("\n");
 						for (int i = 0; i < indentLevel + 1; i++ )
 						{
 							builder.Append("\t");
-						}	
+						}
+						
+						builder.Append(val.ToString(indentLevel + 1));
+						builder.Remove(builder.Length - 1, 1); // Eat the trailing newline.
 					}
-					builder.Append(val.ToString(-1));
+					else
+					{
+						builder.Append(val.ToString(-1));
+					}
 				}
 				
 				if (m_data.arry.Count > 0)
