@@ -25,13 +25,13 @@ namespace IronJSON
 		public IronJSONTokenStream GenerateTokenStream()
 		{
 			IronJSONTokenStream tokenStream = new IronJSONTokenStream();
-			int line = 0;
+			int line = 1;
 			
 			for (int i = 0; i < m_string.Length; ++i)
 			{
 				if (m_string.Substring(i, Environment.NewLine.Length) == Environment.NewLine)
 				{
-					tokenStream.AddNewLine();
+					
 				}
 				
 				if (m_string[i] == '{')
@@ -143,6 +143,7 @@ namespace IronJSON
 				else if (m_string[i] == '\n')
 				{
 					line++;
+					tokenStream.AddNewLine();
 				}
 				else if (m_string[i] == '\r')
 				{
@@ -150,6 +151,7 @@ namespace IronJSON
 					{
 						i++;
 						line++;
+						tokenStream.AddNewLine();
 					}
 					else
 					{
@@ -181,7 +183,7 @@ namespace IronJSON
 					}
 					else
 					{
-						throw new IronJSONException("bad character on line " + line.ToString() + ": " + m_string[i].ToString());
+						throw new IronJSONException(line.ToString() + ": " + "unexpected character: " +  m_string[i].ToString());
 					}
 				}
 			}

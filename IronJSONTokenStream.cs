@@ -20,7 +20,7 @@ namespace IronJSON
 			m_tokens = new List<IronJSONToken>();
 			m_lineTable = new ArrayList();
 			m_index = 0;
-			m_line = 0;
+			m_line = 1;
 		}
 		
 		/// <summary>
@@ -84,7 +84,10 @@ namespace IronJSON
 		{
 			get
 			{
-				return m_tokens[m_index];
+				if (m_index >= 0 && m_index < m_tokens.Count)
+					return m_tokens[m_index];
+				else
+					return new IronJSONToken(TokenType.Nothing);
 			}
 		}
 		

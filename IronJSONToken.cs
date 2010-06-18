@@ -22,7 +22,10 @@ namespace IronJSON
 		Integer,
 		True,
 		False,
-		Null
+		Null,
+		
+		// The None token. Doesn't match anything.
+		Nothing,
 	}
 	
 	/// <summary>

@@ -44,8 +44,8 @@ namespace IronJSON
 		{
 			IronJSONObject obj = new IronJSONObject();
 			
-			if (m_tokenStream.CurrentToken.Type != TokenType.LeftCurlyBracket)
-				throw ParseError("expected '{'");
+			VerifyToken(m_tokenStream.CurrentToken.Type,
+			            new TokenType[]{TokenType.LeftCurlyBracket});
 			
 			// Skip the '{'
 			if (!m_tokenStream.ToNextToken())
@@ -59,14 +59,21 @@ namespace IronJSON
 				m_tokenStream.ToNextToken(); // Skip the id.
 				
 				// Skip the ':'
+				VerifyToken(m_tokenStream.CurrentToken.Type, new TokenType[]{TokenType.Colon});
 				if (!m_tokenStream.ToNextToken())
 					throw ParseError("expected ':'");
 				
 				// Parse the value.
 				obj[id] = ParseValue();
 				
-				// Skip the ',' or '}'
+				// Skip the ',' or '}'. Error if it's not either.
+				VerifyToken(m_tokenStream.CurrentToken.Type, 
+				            new TokenType[]{TokenType.Comma, TokenType.RightCurlyBracket});
 				if (!m_tokenStream.ToNextToken())
+					break;
+				
+				// If what we skipped what a '}', break.
+				if (m_tokenStream.PreviousToken.Type == TokenType.RightCurlyBracket)
 					break;
 			}
 			
