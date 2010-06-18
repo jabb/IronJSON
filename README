@@ -1,0 +1,74 @@
+
+IronJSON
+========
+
+IronJSON is a set of classes for loading, reading, modifying and writing
+JSON objects or files.
+
+Example Usage
+-------------
+
+A simple program to open a file and write it back out. Effectively formatting
+the file:
+
+________________________________________________________________________________
+using System;
+using System.IO;
+using IronJSON;
+
+namespace Example
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+		    string filename = "example.json";
+			JSONManager json = new JSONManager(filename);
+			
+			json.Save(filename);
+		}
+	}
+}
+________________________________________________________________________________
+
+Here's a little bit more complex usage. In this we'll create our own JSON file
+from scratch by setting a few variables. Note that modifying and retrieving
+JSON object behaves much like CDing to certain files.
+
+________________________________________________________________________________
+using System;
+using System.IO;
+using IronJSON;
+
+namespace Example
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			JSONManager json = new JSONManager();
+			
+			json.SetToInteger("anint", 10);
+			
+			// Create a JSON object and "CD" to it so we can add stuff.
+			json.SetToObject("anobject");
+			json.Cd(JSONManager.Path.Relative, "anobject");
+			
+			// Add stuff to it.
+			json.SetToString("astring", "Hello, world!");
+			
+			json.Save("example.json");
+		}
+	}
+}
+________________________________________________________________________________
+
+The expected output:
+
+{
+	"anobject": {
+		"astring": "Hello, world!"
+	},
+	"anint": 10
+}
+
