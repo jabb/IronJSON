@@ -22,7 +22,7 @@ namespace IronJSON
 				JSONManager json = new JSONManager(filename);
 				json.Save(filename + "f.json");
 			}
-			catch (IronJSONException ex)
+			catch (JSONException ex)
 			{
 				Console.WriteLine("Error: " + ex.Message);
 				Console.WriteLine("Check error message for correctness.");

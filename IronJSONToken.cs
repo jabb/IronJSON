@@ -115,7 +115,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != TokenType.String)
-					throw new IronJSONException("invalid string token retrieval");
+					throw new JSONException("invalid string token retrieval");
 				return m_data.strng;
 			}
 		}
@@ -130,7 +130,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != TokenType.Float)
-					throw new IronJSONException("invalid float token retrieval");
+					throw new JSONException("invalid float token retrieval");
 				return m_data.flt;
 			}
 		}
@@ -145,8 +145,43 @@ namespace IronJSON
 			get
 			{
 				if (m_type != TokenType.Integer)
-					throw new IronJSONException("invalid integer token retrieval");
+					throw new JSONException("invalid integer token retrieval");
 				return m_data.intgr;
+			}
+		}
+		
+		override public string ToString()
+		{
+			switch (m_type)
+			{
+			case TokenType.Colon:
+				return "':'";
+			case TokenType.Comma:
+				return "','";
+			case TokenType.False:
+				goto case TokenType.True;
+			case TokenType.True:
+				return "bool";
+			case TokenType.Float:
+				return m_data.flt.ToString();
+			case TokenType.Integer:
+				return m_data.intgr.ToString();
+			case TokenType.LeftCurlyBracket:
+				return "'{'";
+			case TokenType.LeftSquareBracket:
+				return "'['";
+			case TokenType.Nothing:
+				return "nothing";
+			case TokenType.Null:
+				return "null";
+			case TokenType.RightCurlyBracket:
+				return "'}'";
+			case TokenType.RightSquareBracket:
+				return "']'";
+			case TokenType.String:
+				return "\"" + m_data.strng + "\"";
+			default:
+				return "unknown";
 			}
 		}
 	}

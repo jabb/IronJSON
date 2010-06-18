@@ -144,7 +144,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != ValueType.String)
-					throw new IronJSONException("invalid string value retrieval");
+					throw new JSONException("invalid string value retrieval");
 				return m_data.strng;
 			}
 		}
@@ -157,7 +157,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != ValueType.Integer)
-					throw new IronJSONException("invalid integer value retrieval");
+					throw new JSONException("invalid integer value retrieval");
 				return m_data.intgr;
 			}
 		}
@@ -170,7 +170,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != ValueType.Float)
-					throw new IronJSONException("invalid float value retrieval");
+					throw new JSONException("invalid float value retrieval");
 				return m_data.flt;
 			}
 		}
@@ -183,7 +183,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != ValueType.Object)
-					throw new IronJSONException("invalid object value retrieval");
+					throw new JSONException("invalid object value retrieval");
 				return m_data.objct;
 			}
 		}
@@ -196,7 +196,7 @@ namespace IronJSON
 			get
 			{
 				if (m_type != ValueType.Array)
-					throw new IronJSONException("invalid array value retrieval");
+					throw new JSONException("invalid array value retrieval");
 				return m_data.arry;
 			}
 		}

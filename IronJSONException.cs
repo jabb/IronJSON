@@ -6,7 +6,7 @@ namespace IronJSON
 	/// <summary>
 	/// Custon Iron JSON exception. Used for everything in the library.
 	/// </summary>
-	public class IronJSONException : Exception
+	public class JSONException : Exception
 	{
 		/// <summary>
 		/// Pass a message to the exception.
@@ -14,7 +14,7 @@ namespace IronJSON
 		/// <param name="message">
 		/// A <see cref="System.String"/>
 		/// </param>
-		public IronJSONException(string message) : base(message)
+		public JSONException(string message) : base(message)
 		{
 		}
 	}

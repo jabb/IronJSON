@@ -90,7 +90,7 @@ namespace IronJSON
 						}
 						catch
 						{
-							throw new IronJSONException("bad number on line " + line.ToString() + ": " + m_string[i].ToString());
+							throw new JSONException("line " + line.ToString() + ": bad number");
 						}
 					}
 				}
@@ -103,14 +103,14 @@ namespace IronJSON
 						i++;
 						if (i >= m_string.Length)
 						{
-							throw new IronJSONException("unterminated string on line " + line.ToString());
+							throw new JSONException("line " + line.ToString() + ": unterminated string");
 						}
 						else if (m_string[i] == '\\')
 						{
 							i++;
 							if (i >= m_string.Length)
 							{
-								throw new IronJSONException("unterminated string on line " + line.ToString());
+								throw new JSONException("line " + line.ToString() + ": unterminated string");
 							}
 							
 							s += "\\" + m_string[i];
@@ -155,7 +155,7 @@ namespace IronJSON
 					}
 					else
 					{
-						throw new IronJSONException("bad newline on line " + line.ToString());
+						throw new JSONException("line " + line.ToString() + ": bad newline");
 					}
 				}
 				else if (Char.IsWhiteSpace(m_string[i]))
@@ -183,7 +183,7 @@ namespace IronJSON
 					}
 					else
 					{
-						throw new IronJSONException(line.ToString() + ": " + "unexpected character: " +  m_string[i].ToString());
+						throw new JSONException("line " + line.ToString() + ": " + "unrecognized character: " +  m_string[i].ToString());
 					}
 				}
 			}

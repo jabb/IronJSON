@@ -15,7 +15,7 @@ namespace IronJSON
 		/// <summary>
 		/// Base class for all the exceptions.
 		/// </summary>
-		public class KeyException : IronJSONException
+		public class KeyException : JSONException
 		{
 			public KeyException(string message) :
 				base(message)
@@ -67,7 +67,7 @@ namespace IronJSON
 		public class InvalidLocationException : KeyException
 		{
 			public InvalidLocationException(string message) :
-				base(message)
+				base("invalid location: " + message)
 			{
 			}
 		}

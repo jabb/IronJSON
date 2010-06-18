@@ -44,7 +44,7 @@ namespace IronJSON
 		{
 			IronJSONObject obj = new IronJSONObject();
 			
-			VerifyToken(m_tokenStream.CurrentToken.Type,
+			VerifyToken(m_tokenStream.CurrentToken,
 			            new TokenType[]{TokenType.LeftCurlyBracket});
 			
 			// Skip the '{'
@@ -59,7 +59,7 @@ namespace IronJSON
 				m_tokenStream.ToNextToken(); // Skip the id.
 				
 				// Skip the ':'
-				VerifyToken(m_tokenStream.CurrentToken.Type, new TokenType[]{TokenType.Colon});
+				VerifyToken(m_tokenStream.CurrentToken, new TokenType[]{TokenType.Colon});
 				if (!m_tokenStream.ToNextToken())
 					throw ParseError("expected ':'");
 				
@@ -67,7 +67,7 @@ namespace IronJSON
 				obj[id] = ParseValue();
 				
 				// Skip the ',' or '}'. Error if it's not either.
-				VerifyToken(m_tokenStream.CurrentToken.Type, 
+				VerifyToken(m_tokenStream.CurrentToken, 
 				            new TokenType[]{TokenType.Comma, TokenType.RightCurlyBracket});
 				if (!m_tokenStream.ToNextToken())
 					break;
@@ -148,7 +148,7 @@ namespace IronJSON
 				val.Array.Add(ParseValue());
 				
 				// Skip the ',' or ']'. Error if it's not either.
-				VerifyToken(m_tokenStream.CurrentToken.Type, 
+				VerifyToken(m_tokenStream.CurrentToken, 
 				            new TokenType[]{TokenType.Comma, TokenType.RightSquareBracket});
 				if (!m_tokenStream.ToNextToken())
 					break;
@@ -161,7 +161,7 @@ namespace IronJSON
 			return val;
 		}
 		
-		private void VerifyToken(TokenType type, TokenType[] verify)
+		private void VerifyToken(IronJSONToken tok, TokenType[] verify)
 		{
 			string errormsg = "expected ";
 			bool verified = false;
@@ -169,11 +169,11 @@ namespace IronJSON
 			foreach (TokenType t in verify)
 			{
 				errormsg += t.ToString() + ", ";
-				if (type == t)
+				if (tok.Type == t)
 					verified = true;
 			}
 			
-			errormsg += " got: " + type.ToString();
+			errormsg += " got: " + tok.ToString();
 			
 			if (!verified)
 				throw ParseError(errormsg);
@@ -188,9 +188,9 @@ namespace IronJSON
 		/// <returns>
 		/// A <see cref="IronJSONException"/>
 		/// </returns>
-		private IronJSONException ParseError(string message)
+		private JSONException ParseError(string message)
 		{
-			return new IronJSONException("line " + m_tokenStream.GetLineNumber() + ": " + message);
+			return new JSONException("line " + m_tokenStream.GetLineNumber() + ": " + message);
 		}
 	}
 }
