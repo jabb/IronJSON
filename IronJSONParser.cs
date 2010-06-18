@@ -146,7 +146,6 @@ namespace IronJSON
 				if (!m_tokenStream.ToNextToken())
 					break;
 				
-				Console.WriteLine(m_tokenStream.PreviousToken.Type);
 				// If what we skipped what a ']', break.
 				if (m_tokenStream.PreviousToken.Type == TokenType.RightSquareBracket)
 					break;

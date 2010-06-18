@@ -7,9 +7,15 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
-			JSONManager json = new JSONManager("sandbox.json");
-			
-			json.Save("formatted.json");
+			try
+			{
+				JSONManager json = new JSONManager("sandbox.json");
+				json.Save("formatted.json");
+			}
+			catch (IronJSONException ex)
+			{
+				Console.WriteLine("Error: " + ex.Message);
+			}
 		}
 	}
 }
