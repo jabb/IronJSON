@@ -32,11 +32,14 @@ namespace IronJSON
 	internal struct TokenData
 	{
 		[System.Runtime.InteropServices.FieldOffset(0)]
-		public string strng;
-		[System.Runtime.InteropServices.FieldOffset(0)]
 		public long intgr;
 		[System.Runtime.InteropServices.FieldOffset(0)]
 		public double flt;
+		// Visual Studio complains and throws an exception when object
+		// overlap basic datatypes. So these are set to the offset of
+		// the largest basic types (double).
+		[System.Runtime.InteropServices.FieldOffset(sizeof(double))]
+		public string strng;
 	}
 	
 	internal class IronJSONToken
