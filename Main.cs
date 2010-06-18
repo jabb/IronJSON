@@ -7,52 +7,24 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
-			IronJSON json = new IronJSON();
+			JSONManager json = new JSONManager("parse.json");
 			
-			json.Save("empty.json");
+			Console.WriteLine(json.GetIntegerFrom("this"));
 			
-			Test1();
-		}
-		
-		public static void Test1()
-		{
-			StreamReader reader = new StreamReader("sample.json");
-			IronJSONLexer lexer;
-			IronJSONTokenStream stream;
-			IronJSONParser parser;
+			json.Cd(JSONManager.Path.Absolute, "ha", "arr");
+			json.SetToBoolean(0, true);
+			json.SetToBoolean(1, false);
+			json.SetToArray(2, 10);
 			
-			try
-			{
-				lexer = new IronJSONLexer(reader.ReadToEnd());
-			}
-			finally
-			{
-				reader.Close();
-			}
-			stream = lexer.GenerateTokenStream();
+			Console.WriteLine(json.IsArray(2));
 			
-			parser = new IronJSONParser(stream);
+			Console.WriteLine(json.CurrentPath());
 			
-			parser.Parse();
+			json.CdBack();
+			json.Cd(JSONManager.Path.Relative, "doesntexist");
 			
-			Console.WriteLine(parser.Obj.ToString());
-		}
-		
-		/// <summary>
-		/// Test for outputing IronJSONObjects
-		/// </summary>
-		public static void Test2()
-		{
-			IronJSONObject obj = new IronJSONObject();
-			IronJSONObject nobj = new IronJSONObject();
 			
-			nobj["is"] = new IronJSONValue("json");
-			nobj["!"] = new IronJSONValue(ValueType.Null);
-			
-			obj["this"] = new IronJSONValue(5);
-			obj["ha"] = new IronJSONValue(nobj);
-			
-			Console.WriteLine(obj.ToString());
+			json.Save("parse2.json");
 		}
 	}
 }

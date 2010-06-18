@@ -58,6 +58,10 @@ namespace IronJSON
 			{
 				m_data.arry = new ArrayList();
 			}
+			else if (m_type == ValueType.Object)
+			{
+				m_data.objct = new IronJSONObject();
+			}
 		}
 		
 		/// <summary>
@@ -102,6 +106,20 @@ namespace IronJSON
 		public IronJSONValue(IronJSONObject o) : this(ValueType.Object)
 		{
 			m_data.objct = o;
+		}
+		
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="b">
+		/// A <see cref="IronJSONObject"/>
+		/// </param>
+		public IronJSONValue(bool b)
+		{
+			if (b)
+				m_type = ValueType.True;
+			else
+				m_type = ValueType.False;
 		}
 		
 		/// <value>

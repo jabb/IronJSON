@@ -17,6 +17,20 @@ namespace IronJSON
 			m_table = new Hashtable();
 		}
 		
+		/// <summary>
+		/// Returns true if the key exists.
+		/// </summary>
+		/// <param name="key">
+		/// A <see cref="System.String"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool ContainsKey(string key)
+		{
+			return m_table.ContainsKey(key);
+		}
+		
 		/// <value>
 		/// Gets/sets dictionary entries. Returns null if the
 		/// entry doesn't exist.
