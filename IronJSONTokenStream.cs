@@ -1,11 +1,14 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace IronJSON
 {
 	internal class IronJSONTokenStream
 	{
+		private int m_line;
+		private ArrayList m_lineTable;
 		private List<IronJSONToken> m_tokens;
 		private int m_index;
 		
@@ -15,7 +18,9 @@ namespace IronJSON
 		public IronJSONTokenStream()
 		{
 			m_tokens = new List<IronJSONToken>();
+			m_lineTable = new ArrayList();
 			m_index = 0;
+			m_line = 0;
 		}
 		
 		/// <summary>
@@ -47,6 +52,29 @@ namespace IronJSON
 		public void Add(IronJSONToken token)
 		{
 			m_tokens.Add(token);
+			m_lineTable.Add(m_line);
+		}
+		
+		/// <summary>
+		/// Used for more helpful error messages.
+		/// </summary>
+		public void AddNewLine()
+		{
+			m_line++;
+		}
+		
+		/// <summary>
+		/// Get's the current line number.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Int32"/>
+		/// </returns>
+		public int GetLineNumber()
+		{
+			if (m_index >= 0 && m_index < m_lineTable.Count)
+				return (int)m_lineTable[m_index];
+			else
+				return m_line;
 		}
 		
 		/// <summary>

@@ -29,6 +29,11 @@ namespace IronJSON
 			
 			for (int i = 0; i < m_string.Length; ++i)
 			{
+				if (m_string.Substring(i, Environment.NewLine.Length) == Environment.NewLine)
+				{
+					tokenStream.AddNewLine();
+				}
+				
 				if (m_string[i] == '{')
 				{
 					tokenStream.Add(new IronJSONToken(TokenType.LeftCurlyBracket));

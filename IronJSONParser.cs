@@ -140,16 +140,37 @@ namespace IronJSON
 				// Parse the value.
 				val.Array.Add(ParseValue());
 				
-				// Skip the ',' or ']'
+				// Skip the ',' or ']'. Error if it's not either.
+				VerifyToken(m_tokenStream.CurrentToken.Type, 
+				            new TokenType[]{TokenType.Comma, TokenType.RightSquareBracket});
 				if (!m_tokenStream.ToNextToken())
 					break;
 				
+				Console.WriteLine(m_tokenStream.PreviousToken.Type);
 				// If what we skipped what a ']', break.
 				if (m_tokenStream.PreviousToken.Type == TokenType.RightSquareBracket)
 					break;
 			}
 			
 			return val;
+		}
+		
+		private void VerifyToken(TokenType type, TokenType[] verify)
+		{
+			string errormsg = "expected ";
+			bool verified = false;
+			
+			foreach (TokenType t in verify)
+			{
+				errormsg += t.ToString() + ", ";
+				if (type == t)
+					verified = true;
+			}
+			
+			errormsg += " got: " + type.ToString();
+			
+			if (!verified)
+				throw ParseError(errormsg);
 		}
 		
 		/// <summary>
@@ -163,7 +184,7 @@ namespace IronJSON
 		/// </returns>
 		private IronJSONException ParseError(string message)
 		{
-			return new IronJSONException(message);
+			return new IronJSONException("line " + m_tokenStream.GetLineNumber() + ": " + message);
 		}
 	}
 }
