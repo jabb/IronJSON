@@ -233,8 +233,8 @@ namespace IronJSON
 				builder.Append("\"");
 				// Escape certain characters.
 				string temp = String.Copy(m_data.strng);
-				temp = temp.Replace("\"", "\\\"");
 				temp = temp.Replace("\\", "\\\\");
+				temp = temp.Replace("\"", "\\\"");
 				temp = temp.Replace("/", "\\/");
 				temp = temp.Replace("\b", "\\b");
 				temp = temp.Replace("\f", "\\f");
