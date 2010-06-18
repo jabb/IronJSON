@@ -29,7 +29,7 @@ namespace IronJSON
 		public class KeyNotFoundException : KeyException
 		{
 			public KeyNotFoundException(string message) :
-				base(message)
+				base("key not found: " + message)
 			{
 			}
 		}
@@ -250,6 +250,20 @@ namespace IronJSON
 		#endregion
 		
 		#region Checking Functions
+		
+		public bool Exists(object key)
+		{
+			if (key is int && m_cd.Type == ValueType.Array)
+			{
+				return (int)key >= 0 && (int)key < m_cd.Array.Count;
+			}
+			else if (key is string && m_cd.Type == ValueType.Object)
+			{
+				return m_cd.Obj.ContainsKey((string)key);
+			}
+			else
+				throw new InvalidKeyException(key.ToString());
+		}
 		
 		/// <summary>
 		/// 
@@ -604,6 +618,8 @@ namespace IronJSON
 		/// </returns>
 		public double GetFloatFrom(object key)
 		{
+			if (!Exists(key))
+				throw new KeyNotFoundException(key.ToString());
 			if (key is int && m_cd.Type == ValueType.Array)
 			{
 				IronJSONValue val = (IronJSONValue)m_cd.Array[(int)key];
@@ -633,6 +649,8 @@ namespace IronJSON
 		/// </returns>
 		public long GetIntegerFrom(object key)
 		{
+			if (!Exists(key))
+				throw new KeyNotFoundException(key.ToString());
 			if (key is int && m_cd.Type == ValueType.Array)
 			{
 				IronJSONValue val = (IronJSONValue)m_cd.Array[(int)key];
@@ -662,6 +680,8 @@ namespace IronJSON
 		/// </returns>
 		public string GetStringFrom(object key)
 		{
+			if (!Exists(key))
+				throw new KeyNotFoundException(key.ToString());
 			if (key is int && m_cd.Type == ValueType.Array)
 			{
 				IronJSONValue val = (IronJSONValue)m_cd.Array[(int)key];
@@ -691,6 +711,8 @@ namespace IronJSON
 		/// </returns>
 		public bool GetBooleanFrom(object key)
 		{
+			if (!Exists(key))
+				throw new KeyNotFoundException(key.ToString());
 			if (key is int && m_cd.Type == ValueType.Array)
 			{
 				IronJSONValue val = (IronJSONValue)m_cd.Array[(int)key];
