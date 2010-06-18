@@ -718,5 +718,14 @@ namespace IronJSON
 		}
 		
 		#endregion
+		
+		#region Object-defined Functions
+		
+		override public string ToString()
+		{
+			return m_obj.ToString();
+		}
+		
+		#endregion
 	}
 }

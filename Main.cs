@@ -7,10 +7,10 @@ namespace IronJSON
 	{
 		public static void Main(string[] args)
 		{
-			JSONManager json = new JSONManager("sample.json");
+			JSONManager json = new JSONManager(args[0]);
 			
 			
-			json.Save("formatted.json");
+			Console.WriteLine(json.ToString());
 		}
 	}
 }
