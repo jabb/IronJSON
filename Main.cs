@@ -10,16 +10,13 @@ namespace Example
 		{
 			JSONManager json = new JSONManager();
 			
-			json.SetToInteger("anint", 10);
+			json.SetToArray("arr", 5);
 			
-			// Create a JSON object and "CD" to it so we can add stuff.
-			json.SetToObject("anobject");
-			json.Cd(JSONManager.Path.Relative, "anobject");
+			json.Cd(JSONManager.Path.Relative, "arr");
+			json.SetToBoolean(0, true);
+			json.CurrentArraySize = 1;
 			
-			// Add stuff to it.
-			json.SetToString("astring", "Hello, world!");
-			
-			json.Save("example.json");
+			json.Save("examplef.json");
 		}
 	}
 }

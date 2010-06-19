@@ -66,8 +66,8 @@ namespace IronJSON
 		/// </summary>
 		public class InvalidLocationException : KeyException
 		{
-			public InvalidLocationException(string message) :
-				base("invalid location: " + message)
+			public InvalidLocationException(string action, string loc) :
+				base("cannot perform " + action + " to location: " + loc)
 			{
 			}
 		}
@@ -193,7 +193,7 @@ namespace IronJSON
 				if (o is int)
 				{
 					if (m_cd.Type != ValueType.Array)
-						throw new InvalidKeyException(CurrentPath() + o.ToString());
+						throw new InvalidKeyException(CurrentPath + o.ToString());
 					try
 					{
 						m_cd = (IronJSONValue)m_cd.Array[(int)o];
@@ -201,15 +201,15 @@ namespace IronJSON
 					// Out of range of the array.
 					catch (System.ArgumentOutOfRangeException)
 					{
-						throw new KeyNotFoundException(CurrentPath() + o.ToString());
+						throw new KeyNotFoundException(CurrentPath + o.ToString());
 					}
 				}
 				else if (o is string)
 				{
 					if (m_cd.Type != ValueType.Object)
-						throw new InvalidKeyException(CurrentPath() + o.ToString());
+						throw new InvalidKeyException(CurrentPath + o.ToString());
 					else if (!m_cd.Obj.ContainsKey((string)o))
-						throw new KeyNotFoundException(CurrentPath() + o.ToString());
+						throw new KeyNotFoundException(CurrentPath + o.ToString());
 					m_cd = (IronJSONValue)m_cd.Obj[(string)o];
 				}
 				else
@@ -219,7 +219,7 @@ namespace IronJSON
 				
 				// Validate, make sure we CDed to an object or array.
 				if (m_cd.Type != ValueType.Array && m_cd.Type != ValueType.Object)
-					throw new InvalidLocationException(CurrentPath() + o.ToString());
+					throw new InvalidLocationException("change directory (Cd)", CurrentPath + o.ToString());
 			
 				m_curPath.Add(o);
 			}
@@ -237,14 +237,86 @@ namespace IronJSON
 				Cd(Path.Relative, o);
 		}
 		
-		public string CurrentPath()
+		public string CurrentPath
 		{
-			string s = "/";
-			
-			foreach (object o in m_curPath)
-				s += o.ToString() + '/';
-			
-			return s;
+			get
+			{
+				string s = "/";
+				
+				foreach (object o in m_curPath)
+					s += o.ToString() + '/';
+				
+				return s;
+			}
+		}
+		
+		#endregion
+		
+		#region Manipulation Functions
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="key">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="to">
+		/// A <see cref="System.Int32"/>
+		/// </param>
+		public void ResizeArray(object key, int to)
+		{
+			Cd(Path.Relative, key);
+			CurrentArraySize = to;
+			CdBack();
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Int32"/>
+		/// </returns>
+		public int ArraySize(object key)
+		{
+			Cd(Path.Relative, key);
+			int size = CurrentArraySize;
+			CdBack();
+			return size;
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		public int CurrentArraySize
+		{
+			get
+			{
+				if (m_cd.Type == ValueType.Array)
+					return m_cd.Array.Count;
+				else
+					throw new InvalidLocationException("resize array", CurrentPath);
+			}
+			set
+			{
+				if (m_cd.Type == ValueType.Array)
+				{
+					int prevSize = m_cd.Array.Count;
+					
+					if (prevSize < value)
+					{
+						// Set every element to null.
+						for (int i = prevSize; i < value; ++i)
+							m_cd.Array.Add(new IronJSONValue(ValueType.Null));
+					}
+					else
+					{
+						for (int i = prevSize - 1; i >= value; --i)
+							m_cd.Array.RemoveAt(i);
+					}
+				}
+				else
+					throw new InvalidLocationException("resize array", CurrentPath);
+			}
 		}
 		
 		#endregion
