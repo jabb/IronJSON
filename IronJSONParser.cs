@@ -122,7 +122,8 @@ namespace IronJSON
 				return ParseList();
 				
 			default:
-				throw ParseError("expected value, got: " + m_tokenStream.CurrentToken.Type);
+				throw ParseError("expected value got: " +
+				                 IronJSONToken.TokenTypeToString(m_tokenStream.CurrentToken.Type));
 			}
 		}
 		
@@ -136,8 +137,8 @@ namespace IronJSON
 		{
 			IronJSONValue val = new IronJSONValue(ValueType.Array);
 			
-			if (m_tokenStream.CurrentToken.Type != TokenType.LeftSquareBracket)
-				throw ParseError("expected '['");
+			VerifyToken(m_tokenStream.CurrentToken,
+			            new TokenType[]{TokenType.LeftSquareBracket});
 			
 			// Skip the '['
 			if (!m_tokenStream.ToNextToken())
@@ -145,6 +146,13 @@ namespace IronJSON
 			
 			while (!m_tokenStream.AtEnd())
 			{
+				// If what we hit a ']', break.
+				if (m_tokenStream.CurrentToken.Type == TokenType.RightSquareBracket)
+				{
+					m_tokenStream.ToNextToken();
+					break;
+				}
+				
 				// Parse the value.
 				val.Array.Add(ParseValue());
 				
@@ -154,7 +162,7 @@ namespace IronJSON
 				if (!m_tokenStream.ToNextToken())
 					break;
 				
-				// If what we skipped what a ']', break.
+				// If what we hit a ']', break.
 				if (m_tokenStream.PreviousToken.Type == TokenType.RightSquareBracket)
 					break;
 			}
