@@ -8,15 +8,16 @@ namespace Example
 	{
 		public static void Main(string[] args)
 		{
-			JSONManager json = new JSONManager();
-			
-			json.SetToArray("arr", 5);
-			
-			json.Cd(JSONManager.Path.Relative, "arr");
-			json.SetToBoolean(0, true);
-			json.CurrentArraySize = 1;
-			
-			json.Save("examplef.json");
+			try
+			{
+				JSONManager json = new JSONManager("sample.json");
+				
+				json.Save("formatted.json");
+			}
+			catch (JSONException ex)
+			{
+				Console.WriteLine("Error: " + ex.Message);
+			}
 		}
 	}
 }

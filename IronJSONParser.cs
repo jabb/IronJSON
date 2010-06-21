@@ -1,5 +1,6 @@
 
 using System;
+using System.Text;
 
 namespace IronJSON
 {
@@ -163,20 +164,23 @@ namespace IronJSON
 		
 		private void VerifyToken(IronJSONToken tok, TokenType[] verify)
 		{
-			string errormsg = "expected ";
+			StringBuilder errormsg = new StringBuilder("expected ");
 			bool verified = false;
 			
 			foreach (TokenType t in verify)
 			{
-				errormsg += t.ToString() + ", ";
+				errormsg.Append("'" + IronJSONToken.TokenTypeToString(t) + "' or ");
 				if (tok.Type == t)
 					verified = true;
 			}
 			
-			errormsg += " got: " + tok.ToString();
+			if (verify.Length > 0)
+				errormsg.Remove(errormsg.Length - 4, 4);
+			
+			errormsg.Append(" got: " + tok.ToString());
 			
 			if (!verified)
-				throw ParseError(errormsg);
+				throw ParseError(errormsg.ToString());
 		}
 		
 		/// <summary>

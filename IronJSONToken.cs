@@ -47,6 +47,50 @@ namespace IronJSON
 	
 	internal class IronJSONToken
 	{
+		/// <summary>
+		/// Static method for converting token types to a readable format.
+		/// </summary>
+		/// <param name="type">
+		/// A <see cref="TokenType"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.String"/>
+		/// </returns>
+		public static string TokenTypeToString(TokenType type)
+		{
+			switch (type)
+			{
+			case TokenType.LeftCurlyBracket:
+				return "{";
+			case TokenType.RightCurlyBracket:
+				return "}";
+			case TokenType.LeftSquareBracket:
+				return "[";
+			case TokenType.RightSquareBracket:
+				return "]";
+			case TokenType.Comma:
+				return ",";
+			case TokenType.Colon:
+				return ":";
+			case TokenType.String:
+				return "string";
+			case TokenType.Float:
+				return "number";
+			case TokenType.Integer:
+				return "number";
+			case TokenType.True:
+				return "bool";
+			case TokenType.False:
+				return "bool";
+			case TokenType.Null:
+				return "null";
+			case TokenType.Nothing:
+				return "nothing";
+			default:
+				return "unknown";
+			}
+		}
+		
 		private TokenType 	m_type;
 		private TokenData	m_data;
 		
