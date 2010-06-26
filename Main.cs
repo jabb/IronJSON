@@ -48,8 +48,13 @@ namespace Example
 			json.SerializeString("owner", owner);
 			
 			json.SerializeArrayBegin("array");
-			for (int i = 0; i < 100; ++i)
-				json.SerializeArrayInteger(i);
+			for (int i = 1; i <= 10; ++i)
+			{
+				json.SerializeArrayBegin();
+				for (int j = 1; j <= 10; ++j)
+					json.SerializeInteger(i * j);
+				json.SerializeArrayEnd();
+			}
 			json.SerializeArrayEnd();
 		}
 	    

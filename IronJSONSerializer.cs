@@ -57,8 +57,12 @@ namespace IronJSON
 		
 		public void SerializeArrayBegin(string key)
 		{
-			Manager.SetToArray(key, 0);
-			Manager.Cd(JSONManager.Path.Relative, key);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToArray(key, 0);
+				Manager.Cd(JSONManager.Path.Relative, key);
+			}
+			// TODO: Handle error.
 		}
 		
 		public void SerializeArrayBegin()
@@ -84,10 +88,14 @@ namespace IronJSON
 
 		public void SerializeString(string key, string s)
 		{
-			Manager.SetToString(key, s);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToString(key, s);
+			}
+			// TODO: Handle error.
 		}
 		
-		public void SerializeArrayString(string s)
+		public void SerializeString(string s)
 		{
 			if (Manager.IsCurrentArray())
 			{
@@ -100,10 +108,14 @@ namespace IronJSON
 		
 		public void SerializeInteger(object key, long i)
 		{
-			Manager.SetToInteger(key, i);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToInteger(key, i);
+			}
+			// TODO: Handle error.
 		}
 		
-		public void SerializeArrayInteger(long i)
+		public void SerializeInteger(long i)
 		{
 			if (Manager.IsCurrentArray())
 			{
@@ -116,10 +128,14 @@ namespace IronJSON
 		
 		public void SerializeFloat(string key, double f)
 		{
-			Manager.SetToFloat(key, f);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToFloat(key, f);
+			}
+			// TODO: Handle error.
 		}
 		
-		public void SerializeArrayFloat(double f)
+		public void SerializeFloat(double f)
 		{
 			if (Manager.IsCurrentArray())
 			{
@@ -132,10 +148,14 @@ namespace IronJSON
 		
 		public void SerializeBoolean(string key, bool b)
 		{
-			Manager.SetToBoolean(key, b);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToBoolean(key, b);
+			}
+			// TODO: Handle error.
 		}
 		
-		public void SerializeArrayBoolean(bool b)
+		public void SerializeBoolean(bool b)
 		{
 			if (Manager.IsCurrentArray())
 			{
@@ -148,10 +168,14 @@ namespace IronJSON
 		
 		public void SerializeNull(string key)
 		{
-			Manager.SetToNull(key);
+			if (!Manager.IsCurrentArray())
+			{
+				Manager.SetToNull(key);
+			}
+			// TODO: Handle error.
 		}
 		
-		public void SerializeArrayNull()
+		public void SerializeNull()
 		{
 			if (Manager.IsCurrentArray())
 			{
