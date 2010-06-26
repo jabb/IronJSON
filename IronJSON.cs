@@ -231,7 +231,29 @@ namespace IronJSON
 		public void CdBack()
 		{
 			ArrayList tmpPath = (ArrayList)m_curPath.Clone();
+			
+			if (tmpPath.Count == 0)
+				return;
+			
 			tmpPath.RemoveAt(m_curPath.Count - 1);
+			Cd(Path.Absolute);
+			foreach (object o in tmpPath)
+				Cd(Path.Relative, o);
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		public void CdBack(int times)
+		{
+			ArrayList tmpPath = (ArrayList)m_curPath.Clone();
+			
+			if (tmpPath.Count < times)
+				return;
+			
+			for (int i = 0; i < times; ++i)
+				tmpPath.RemoveAt(m_curPath.Count - 1);
+			
 			Cd(Path.Absolute);
 			foreach (object o in tmpPath)
 				Cd(Path.Relative, o);
@@ -512,6 +534,28 @@ namespace IronJSON
 			}
 			else
 				throw new InvalidKeyException(key.ToString());
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool IsCurrentArray()
+		{
+			return m_cd.Type == ValueType.Array;
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool IsCurrentObject()
+		{
+			return m_cd.Type == ValueType.Object;
 		}
 		
 		/// <summary>

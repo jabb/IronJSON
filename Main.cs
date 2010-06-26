@@ -9,14 +9,14 @@ namespace Example
 		public static void Main(string[] args)
 		{
 			string filename = "data.json";
-			JSONSerializer serializer = new JSONSerializer(filename);
+			JSONSerializer serializer = new JSONSerializer();
 			Car car = new Car("wrong", "Red", 4, "Me!");
 			car.AnotherCar = new Car("wrong", "White", 4, "Wife");
 			car.AnotherCar.AnotherCar = new Car("wrong", "Red", 0, "No one");
 			
-			serializer.Deserialize("car", car);
+			serializer.Serialize("car", car);
 			
-			//serializer.Save(filename);
+			serializer.Save(filename);
 			
 			Console.WriteLine("{0} {1} {2}", car.name, car.AnotherCar.name, car.AnotherCar.AnotherCar.name);
 		}
@@ -41,31 +41,21 @@ namespace Example
 	    
 		public void JSONSerialize(JSONSerializer json)
 		{
-			if (AnotherCar != null)
-				json.Serialize("car", AnotherCar);
-			double[] array = new double[3]{3.1, 4.1, 5.9};
-			object[] narray = new object[array.Length];
-			Array.Copy(array, narray, array.Length);
-			json.SerializeArray("arr", narray);
-			json.SerializeObject("name", name);
-			json.SerializeObject("color", color);
-			json.SerializeObject("wheels", wheels);
-			json.SerializeObject("owner", owner);
+			json.Serialize("child car", AnotherCar);
+			json.SerializeString("name", name);
+			json.SerializeString("color", color);
+			json.SerializeInteger("wheels", wheels);
+			json.SerializeString("owner", owner);
+			
+			json.SerializeArrayBegin("array");
+			for (int i = 0; i < 100; ++i)
+				json.SerializeArrayInteger(i);
+			json.SerializeArrayEnd();
 		}
 	    
 		public void JSONDeserialize(JSONSerializer json)
 		{
-			if (AnotherCar != null)
-				json.Deserialize("car", AnotherCar);
-			object[] narray = json.DeserializeArray("arr");
-			double[] array = new double[narray.Length];
 			
-			Array.Copy(narray, array, narray.Length);
-			
-			name = (string)json.DeserializeObject("name");
-			color = (string)json.DeserializeObject("color");
-			wheels = Convert.ToInt32(json.DeserializeObject("wheels"));
-			owner = (string)json.DeserializeObject("owner");
 		}
 	}
 }

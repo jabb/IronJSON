@@ -51,42 +51,115 @@ namespace IronJSON
 			if (json != null)
 				json.JSONSerialize(this);
 			else
-				SerializeObject(key, null);
+				SerializeNull(key);
 			Manager.CdBack();
 		}
 		
-		public void SerializeArray(string key, object[] array)
+		public void SerializeArrayBegin(string key)
 		{
-			Manager.SetToArray(key, array.Length);
+			Manager.SetToArray(key, 0);
 			Manager.Cd(JSONManager.Path.Relative, key);
-			if (array != null)
+		}
+		
+		public void SerializeArrayBegin()
+		{
+			if (Manager.IsCurrentArray())
 			{
-				for (int i = 0; i < array.Length; ++i)
-				{
-					SerializeObject(i, array[i]);
-				}
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToArray(length, 0);
+				Manager.Cd(JSONManager.Path.Relative, length);
 			}
-			else
-				SerializeObject(key, null);
-			Manager.CdBack();
+			// TODO: Handle error.
+		}
+		
+		public void SerializeArrayEnd()
+		{
+			if (Manager.IsCurrentArray())
+			{
+				Manager.CdBack();
+			}
+			// TODO: Handle error.
 		}
 
-		public void SerializeObject(object key, object o)
+		public void SerializeString(string key, string s)
 		{
-			if (o is string)
-				Manager.SetToString(key, (string)o);
-			else if (o is int)
-				Manager.SetToInteger(key, (long)(int)o);
-			else if (o is long)
-				Manager.SetToInteger(key, (long)o);
-			else if (o is double)
-				Manager.SetToFloat(key, (double)o);
-			else if (o is float)
-				Manager.SetToFloat(key, (double)(float)o);
-			else if (o is bool)
-				Manager.SetToBoolean(key, (bool)o);
-			else if (o == null)
-				Manager.SetToNull(key);
+			Manager.SetToString(key, s);
+		}
+		
+		public void SerializeArrayString(string s)
+		{
+			if (Manager.IsCurrentArray())
+			{
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToString(length, s);
+			}
+			// TODO: Handle error.
+		}
+		
+		public void SerializeInteger(object key, long i)
+		{
+			Manager.SetToInteger(key, i);
+		}
+		
+		public void SerializeArrayInteger(long i)
+		{
+			if (Manager.IsCurrentArray())
+			{
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToInteger(length, i);
+			}
+			// TODO: Handle error.
+		}
+		
+		public void SerializeFloat(string key, double f)
+		{
+			Manager.SetToFloat(key, f);
+		}
+		
+		public void SerializeArrayFloat(double f)
+		{
+			if (Manager.IsCurrentArray())
+			{
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToFloat(length, f);
+			}
+			// TODO: Handle error.
+		}
+		
+		public void SerializeBoolean(string key, bool b)
+		{
+			Manager.SetToBoolean(key, b);
+		}
+		
+		public void SerializeArrayBoolean(bool b)
+		{
+			if (Manager.IsCurrentArray())
+			{
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToBoolean(length, b);
+			}
+			// TODO: Handle error.
+		}
+		
+		public void SerializeNull(string key)
+		{
+			Manager.SetToNull(key);
+		}
+		
+		public void SerializeArrayNull()
+		{
+			if (Manager.IsCurrentArray())
+			{
+				int length = Manager.CurrentArraySize;
+				Manager.CurrentArraySize = length + 1;
+				Manager.SetToNull(length);
+			}
+			// TODO: Handle error.
 		}
 		
 		public void Deserialize(string key, IJSONSerializable json)
